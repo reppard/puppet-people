@@ -21,6 +21,14 @@ class people::dotfiles(
     require => Package['git'],
   }
 
+  file { $path:
+    ensure  => directory,
+    recurse => true,
+    owner   => $user,
+    group   => $user,
+    require => Exec['clone_dotfiles'],
+  }
+
   file { "${home}/.tmux.conf":
     ensure  => link,
     target  => "${path}/tmux.conf",
