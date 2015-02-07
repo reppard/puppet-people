@@ -1,0 +1,17 @@
+{
+  "name": "reppard-people",
+  "version": "0.1.0",
+  "author": "reppard",
+  "summary": "user stuff",
+  "license": "Apache 2.0",
+  "source": "https://github.com/reppard/puppet-people.git",
+  "project_page": "https://github.com/reppard/puppet-people",
+  "issues_url": "https://github.com/reppard/puppet-people/issues",
+  "dependencies": [
+    {
+      "name": "puppetlabs-stdlib",
+      "version_range": ">= 1.0.0"
+    }
+  ]
+}
+
