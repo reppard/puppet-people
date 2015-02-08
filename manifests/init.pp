@@ -1,41 +1,74 @@
 # == Class: people
-#
-# Full description of class people here.
+# Class for setting up users and their dotfiles as well as some default
+# vim configuration.  Pretty specific to my setup
 #
 # === Parameters
-#
-# Document parameters here.
-#
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
+# user and passwd.  Probably more to come.
 #
 # === Variables
-#
-# Here you should define a list of variables that this module would require.
-#
-# [*sample_variable*]
-#   Explanation of how this variable affects the funtion of this class and if
-#   it has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#   External Node Classifier as a comma separated list of hostnames." (Note,
-#   global variables should be avoided in favor of class parameters as
-#   of Puppet 2.6.)
+# See parameters
 #
 # === Examples
 #
 #  class { people:
-#    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
+#    $user   = some_user,
+#    $passwd = 'S0m3D3f@ultS@lt',
 #  }
 #
 # === Authors
-#
-# Author Name <author@domain.com>
+# Reppard Walker <reppardwalker@gmail.com>
 #
 # === Copyright
+# Copyright 2015 Reppard Walker
 #
-# Copyright 2015 Your name here, unless otherwise noted.
-#
-class people {
+class people (
+  $user   = false,
+  $passwd = false,
+){
+  $home = "/home/${user}"
 
-
+  if $user == false {
+    fail('You must pass a username to this class')
+  }
+  user { $user:
+    ensure   => present,
+    password => $passwd,
+    home     => $home,
+  }
+  file { $home:
+    ensure  => directory,
+    owner   => $user,
+    group   => $user,
+    require => User[$user],
+  }
+  class { 'people::dotfiles': user => $user }
+  class { 'vim':
+    user     => $user,
+    home_dir => $home,
+    require  => File[$home],
+  }
+  vim::plugin { 'nerdtree':
+    source   => 'https://github.com/scrooloose/nerdtree.git',
+    require  => File[$home],
+  }
+  vim::plugin { 'solarized':
+    source   => 'https://github.com/altercation/vim-colors-solarized.git',
+    require  => File[$home],
+  }
+  vim::plugin { 'ack':
+    source   => 'https://github.com/mileszs/ack.vim.git',
+    require  => File[$home],
+  }
+  vim::plugin { 'ctrlp' :
+    source   => 'https://github.com/kien/ctrlp.vim.git',
+    require  => File[$home],
+  }
+  vim::plugin { 'syntastic':
+    source   => 'https://github.com/scrooloose/syntastic.git',
+    require  => File[$home],
+  }
+  vim::plugin { 'vim-puppet':
+    source   => 'https://github.com/rodjek/vim-puppet.git',
+    require  => File[$home],
+  }
 }
