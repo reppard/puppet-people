@@ -23,7 +23,7 @@
 #
 class people (
   $user   = false,
-  $passwd = false,
+  $passwd = '$1$mBuqh43.$nv3F3TsEa4r8h/uZfpjgf.',
 ){
   $home = "/home/${user}"
 
@@ -31,9 +31,9 @@ class people (
     fail('You must pass a username to this class')
   }
   user { $user:
-    ensure   => present,
-    password => $passwd,
-    home     => $home,
+    ensure     => present,
+    password   => $passwd,
+    managehome => true,
   }
   file { $home:
     ensure  => directory,

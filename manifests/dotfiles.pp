@@ -50,5 +50,3 @@ class people::dotfiles(
     require => Exec['clone_dotfiles'],
   }
 }
-
-
