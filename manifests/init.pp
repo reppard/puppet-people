@@ -23,7 +23,7 @@
 #
 class people (
   $user   = false,
-  $passwd = '$1$mBuqh43.$nv3F3TsEa4r8h/uZfpjgf.',
+  $passwd = 'changeme',
 ){
   $home = "/home/${user}"
 
