@@ -23,7 +23,6 @@
 #
 class people (
   $user   = false,
-  $passwd = 'changeme',
 ){
   $home = "/home/${user}"
 
@@ -32,7 +31,6 @@ class people (
   }
   user { $user:
     ensure     => present,
-    password   => $passwd,
     managehome => true,
   }
   file { $home:
